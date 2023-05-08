@@ -30,6 +30,7 @@ router.post("/login", (req, res) => {
         email: user.email,
         name: user.name,
         user: user.user,
+        favorites: user.favorites,
       };
 
       const token = generateToken(payload);
@@ -53,16 +54,26 @@ router.get("/secret", validateAuth, (req, res) => {
 });
 
 router.get("/me", validateAuth, (req, res) => {
-  console.log("REQ USER", req.user);
   res.send(req.user);
 });
 
-router.put("/add_favorite", (req, res) => {
-  res.send("hola");
+router.put("/addtofavorites", (req, res) => {
+  const { favorites, email } = req.body;
+  Users.update({ favorites }, { where: { email }, returning: true })
+    .then(([affectedRows, updated]) => {
+      const user = updated[0];
+      res.send(user);
+    })
+    .catch((error) => console.log(error));
 });
 
-router.put("/remove_favorite", (req, res) => {
-  res.send("hola");
+router.put("/removefromfavorites", (req, res) => {
+  Users.update(req.body, { where: { email: req.body.email }, returning: true })
+    .then(([affectedRows, updated]) => {
+      const user = updated[0];
+      res.send(user);
+    })
+    .catch((error) => console.log(error));
 });
 
 module.exports = router;
