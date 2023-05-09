@@ -8,14 +8,33 @@ const { validateAuth } = require("../middlewares/auth");
 
 const { generateToken, validateToken } = require("../config");
 
-router.get("/", (req, res) => {
-  res.send("hola");
+const Sequelize = require("sequelize");
+
+router.get("/users/:userSearched", (req, res) => {
+  const { userSearched } = req.params;
+  Users.findAll({
+    where: {
+      user: {
+        [Sequelize.Op.substring]: userSearched,
+      },
+    },
+  }).then((user) => {
+    res.send(user.map((user) => user.dataValues.user));
+  });
 });
 
 router.post("/signup", (req, res) => {
   Users.create(req.body).then((user) => {
     res.status(201).send(user);
   });
+});
+
+router.get("/userfavorites/:username", (req, res) => {
+  const user = req.params.username;
+  console.log("USER EN BACK", user);
+  Users.findOne({ where: { user } })
+    .then((result) => res.send(result.dataValues.favorites))
+    .catch((error) => console.log(error));
 });
 
 router.post("/login", (req, res) => {
