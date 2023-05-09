@@ -31,7 +31,6 @@ router.post("/signup", (req, res) => {
 
 router.get("/userfavorites/:username", (req, res) => {
   const user = req.params.username;
-  console.log("USER EN BACK", user);
   Users.findOne({ where: { user } })
     .then((result) => res.send(result.dataValues.favorites))
     .catch((error) => console.log(error));
@@ -68,7 +67,7 @@ router.post("/login", (req, res) => {
 router.post("/logout", (req, res) => {
   res.clearCookie("token");
 
-  console.log("Logged out");
+  console.log("User logged out");
   res.sendStatus(204);
 });
 
@@ -99,16 +98,5 @@ router.put("/addtofavorites", (req, res) => {
     })
     .catch((error) => console.log(error));
 });
-
-// router.put("/removefromfavorites", (req, res) => {
-//   const { favorites, email } = req.body;
-
-//   Users.update({favorites}, { where: { email }, returning: true })
-//     .then(([affectedRows, updated]) => {
-//       const user = updated[0];
-//       res.send(user);
-//     })
-//     .catch((error) => console.log(error));
-// });
 
 module.exports = router;
