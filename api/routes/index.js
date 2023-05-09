@@ -30,14 +30,18 @@ router.post("/login", (req, res) => {
         email: user.email,
         name: user.name,
         user: user.user,
-        favorites: user.favorites,
       };
 
       const token = generateToken(payload);
 
       res.cookie("token", token);
 
-      res.status(200).send(payload);
+      const userFront = payload;
+      user.favorites
+        ? (userFront.favorites = user.favorites)
+        : (user.favorites = []);
+
+      res.status(200).send(userFront);
     });
   });
 });
@@ -54,7 +58,17 @@ router.get("/secret", validateAuth, (req, res) => {
 });
 
 router.get("/me", validateAuth, (req, res) => {
-  res.send(req.user);
+  const userFront = req.user;
+  const { email } = req.user;
+
+  Users.findOne({ where: { email } })
+    .then((user) => {
+      user.favorites
+        ? (userFront.favorites = user.favorites)
+        : (user.favorites = []);
+      res.send(userFront);
+    })
+    .catch((error) => console.log(error));
 });
 
 router.put("/addtofavorites", (req, res) => {
@@ -67,13 +81,15 @@ router.put("/addtofavorites", (req, res) => {
     .catch((error) => console.log(error));
 });
 
-router.put("/removefromfavorites", (req, res) => {
-  Users.update(req.body, { where: { email: req.body.email }, returning: true })
-    .then(([affectedRows, updated]) => {
-      const user = updated[0];
-      res.send(user);
-    })
-    .catch((error) => console.log(error));
-});
+// router.put("/removefromfavorites", (req, res) => {
+//   const { favorites, email } = req.body;
+
+//   Users.update({favorites}, { where: { email }, returning: true })
+//     .then(([affectedRows, updated]) => {
+//       const user = updated[0];
+//       res.send(user);
+//     })
+//     .catch((error) => console.log(error));
+// });
 
 module.exports = router;
