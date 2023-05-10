@@ -27,8 +27,6 @@ router.post("/signup", (req, res) => {
   const { email } = req.body;
 
   Users.findOrCreate({ where: { email }, defaults: req.body }).then((user) => {
-    console.log("user BACK", user[0].dataValues);
-
     res.status(201).send(user[0].dataValues);
   });
 });
