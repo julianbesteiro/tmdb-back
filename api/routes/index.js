@@ -24,8 +24,12 @@ router.get("/users/:userSearched", (req, res) => {
 });
 
 router.post("/signup", (req, res) => {
-  Users.create(req.body).then((user) => {
-    res.status(201).send(user);
+  const { email } = req.body;
+
+  Users.findOrCreate({ where: { email }, defaults: req.body }).then((user) => {
+    console.log("user BACK", user[0].dataValues);
+
+    res.status(201).send(user[0].dataValues);
   });
 });
 
@@ -91,12 +95,15 @@ router.get("/me", validateAuth, (req, res) => {
 
 router.put("/addtofavorites", (req, res) => {
   const { favorites, email } = req.body;
-  Users.update({ favorites }, { where: { email }, returning: true })
-    .then(([affectedRows, updated]) => {
-      const user = updated[0];
-      res.send(user);
-    })
-    .catch((error) => console.log(error));
+
+  if (req.body.email) {
+    Users.update({ favorites }, { where: { email }, returning: true })
+      .then(([affectedRows, updated]) => {
+        const user = updated[0];
+        res.send(user);
+      })
+      .catch((error) => console.log(error));
+  }
 });
 
 module.exports = router;
