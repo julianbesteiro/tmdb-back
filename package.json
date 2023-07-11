@@ -1,10 +1,15 @@
 {
+  "author": "Julian Besteiro",
   "name": "tmdb-back",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
     "start": "nodemon api/server.js"
+  },
+  "engines": {
+    "node": "16.20.0",
+    "npm": "8.9.14"
   },
   "proxy": "http://localhost:3001",
   "dependencies": {
@@ -31,7 +36,6 @@
     "url": "git+https://github.com/julianbesteiro/tmdb-back.git"
   },
   "keywords": [],
-  "author": "",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/julianbesteiro/tmdb-back/issues"
