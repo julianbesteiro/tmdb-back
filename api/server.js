@@ -11,7 +11,7 @@ const app = express();
 app.use(express.json());
 app.use(
   cors({
-    origin: "http://localhost:3000",
+    origin: ["http://localhost:3000", "https://tmdb-front-ivory.vercel.app"],
     methods: ["GET", "POST", "DELETE", "OPTIONS"],
     credentials: true,
   })
