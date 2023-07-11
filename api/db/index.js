@@ -1,16 +1,23 @@
 const Sequelize = require("sequelize");
 require("dotenv").config();
 
-const url = process.env.DB_URL;
+const user = process.env.DB_USER;
+const password = process.env.DB_PASSWORD;
+const host = process.env.DB_HOST;
+const port = process.env.DB_PORT;
+const name = process.env.DB_NAME;
 
-const db = new Sequelize(url, {
-  dialect: "postgres",
-  protocol: "postgres",
-  dialectOptions: {
-    ssl: true,
-    native: true,
-  },
-  logging: false,
-});
+const db = new Sequelize(
+  `postgres://${user}:${password}@${host}.oregon-postgres.render.com:${port}/${name}`,
+  {
+    dialect: "postgres",
+    protocol: "postgres",
+    dialectOptions: {
+      ssl: true,
+      native: true,
+    },
+    logging: false,
+  }
+);
 
 module.exports = db;
