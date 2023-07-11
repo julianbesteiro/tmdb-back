@@ -81,6 +81,8 @@ router.get("/me", validateAuth, (req, res) => {
   const userFront = req.user;
   const { email } = req.user;
 
+  console.log("req.user", req.user);
+
   Users.findOne({ where: { email } })
     .then((user) => {
       user.favorites
