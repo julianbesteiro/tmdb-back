@@ -93,7 +93,6 @@ router.get("/me", validateAuth, (req, res) => {
 
 router.put("/addtofavorites", (req, res) => {
   const { favorites, email } = req.body;
-
   if (req.body.email) {
     Users.update({ favorites }, { where: { email }, returning: true })
       .then(([affectedRows, updated]) => {
