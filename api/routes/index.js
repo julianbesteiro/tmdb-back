@@ -61,7 +61,7 @@ router.post("/login", (req, res) => {
         ? (userFront.favorites = user.favorites)
         : (user.favorites = []);
 
-      res.status(200).send(userFront);
+      res.status(200).send(userFront, token);
     });
   });
 });
