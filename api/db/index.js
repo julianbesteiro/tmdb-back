@@ -22,7 +22,7 @@ const name = process.env.DB_NAME;
 
 const db = new Sequelize({
   dialect: "postgres",
-  host: "dpg-cimo1pt9aq040krb6rsg-a.oregon-postgres.render.com",
+  host: `${host}.oregon-postgres.render.com`,
   port: port,
   database: name,
   username: user,
