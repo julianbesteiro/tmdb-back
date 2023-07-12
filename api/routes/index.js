@@ -73,11 +73,11 @@ router.post("/logout", (req, res) => {
   res.sendStatus(204);
 });
 
-router.get("/secret", validateAuth, (req, res) => {
+router.post("/secret", validateAuth, (req, res) => {
   res.send(req.user);
 });
 
-router.get("/me", validateAuth, (req, res) => {
+router.post("/me", validateAuth, (req, res) => {
   const userFront = req.user;
   const { email } = req.user;
 
